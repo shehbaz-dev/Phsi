@@ -1,0 +1,8 @@
+{
+  "name": "tiktok-phish-vercel",
+  "version": "1.0.0",
+  "description": "TikTok phishing page hosted on Vercel",
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
